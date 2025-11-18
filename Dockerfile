@@ -13,6 +13,8 @@ RUN apt-get update && \
       odbc-postgresql \
       curl \
       nano \
+      net-tools \
+      procps \
       # add anything else you need
     && rm -rf /var/lib/apt/lists/*
 
@@ -28,8 +30,15 @@ COPY asterisk/odbcinst.ini /etc/odbcinst.ini
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Expose Asterisk default SIP + RTP ports
-EXPOSE 5060/udp 5060/tcp 10000-20000/udp
+# Copy verification script
+COPY verify-asterisk.sh /verify-asterisk.sh
+RUN chmod +x /verify-asterisk.sh
+
+# Expose Asterisk ports
+# 5060: SIP UDP/TCP
+# 8089: WebSocket Secure (WSS) para WebRTC
+# 10000-20000: RTP para audio/video
+EXPOSE 5060/udp 5060/tcp 8089/tcp 10000-20000/udp
 
 # Default command: start Asterisk in foreground
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
