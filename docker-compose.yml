@@ -19,6 +19,11 @@ services:
     depends_on:
       - db
     restart: unless-stopped
+    ports:
+      - "5060:5060/udp"     # SIP UDP
+      - "5060:5060/tcp"     # SIP TCP
+      - "8089:8089/tcp"     # WebSocket Secure (WebRTC)
+      - "10000-10100:10000-10100/udp"  # RTP para audio/video (ajustar rango según necesidad)
     
 volumes:
   dbdata:

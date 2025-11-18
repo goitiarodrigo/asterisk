@@ -2,6 +2,35 @@
 
 Este proyecto permite levantar Asterisk con PostgreSQL usando Docker Compose.
 
+---
+
+## 🎯 Ambiente de Calidad - Configuración Lista
+
+✅ **3 extensiones de prueba configuradas** (1001, 1002, 1003)
+✅ **Soporte de video habilitado** (H.264, VP8, VP9)
+✅ **WebRTC configurado** (para navegadores)
+✅ **Dialplan de testing** con extensiones de prueba
+
+### ⚡ Quick Start
+
+```bash
+# 1. Build y levantar
+docker build -t asterisk-normal:22.5.1 .
+docker compose up -d
+
+# 2. Verificar
+docker exec -it asterisk /verify-asterisk.sh
+
+# 3. Configurar Zoiper con:
+#    - Usuario: test1001 / Password: Test1001!
+#    - Domain: <IP_SERVIDOR>:5060
+```
+
+📘 **Guía completa**: Ver `GUIA_AMBIENTE_CALIDAD.md`
+⚡ **Inicio rápido**: Ver `QUICK_START.md`
+
+---
+
 #### CREAR LA IMAGEN DE ASTERISK
 
 Antes de levantar los contenedores, es necesario crear la imagen de Asterisk a partir del Dockerfile incluido en el zip. Para ello, desde la carpeta donde se encuentra el Dockerfile, ejecutar:
