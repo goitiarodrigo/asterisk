@@ -1,0 +1,9 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Shell scripts should always use LF
+*.sh text eol=lf
+
+# Dockerfiles should use LF
+Dockerfile text eol=lf
+**/Dockerfile text eol=lf
