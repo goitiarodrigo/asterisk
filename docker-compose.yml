@@ -31,8 +31,23 @@ services:
     ports:
       - "5060:5060/udp"     # SIP UDP
       - "5060:5060/tcp"     # SIP TCP
-      - "8089:8089/tcp"     # WebSocket Secure (WebRTC)
+      # Puerto 8089 ahora manejado por nginx-wss proxy
       - "10000-10100:10000-10100/udp"  # RTP para audio/video (ajustar rango según necesidad)
+    networks:
+      - asterisk-network
+
+  # Proxy Nginx para WebSocket Secure (WSS)
+  nginx-wss:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: nginx-wss-proxy:latest
+    container_name: nginx-wss
+    depends_on:
+      - asterisk
+    restart: unless-stopped
+    ports:
+      - "8089:8089"        # WebSocket Secure (WSS)
     networks:
       - asterisk-network
 
