@@ -6,8 +6,6 @@ import {
   Session,
   SessionState,
   RegistererState,
-  UserAgentOptions,
-  URI,
 } from 'sip.js';
 import { SessionDescriptionHandler } from 'sip.js/lib/platform/web';
 
