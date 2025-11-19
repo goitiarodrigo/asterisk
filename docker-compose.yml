@@ -20,6 +20,9 @@ services:
 
   # Servidor Asterisk (SIP/WebRTC)
   asterisk:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: asterisk-normal:22.5.1
     container_name: asterisk
     depends_on:
