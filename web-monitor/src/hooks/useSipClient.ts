@@ -212,8 +212,47 @@ export const useSipClient = (config: SipConfig) => {
                       const pc = sessionDescriptionHandler.peerConnection;
                       if (pc) {
                         const stats = await pc.getStats();
+                        let hasInboundRtp = false;
+
+                        // Log del estado de conexión ICE
+                        console.log('🔌 PeerConnection State:', {
+                          connectionState: pc.connectionState,
+                          iceConnectionState: pc.iceConnectionState,
+                          iceGatheringState: pc.iceGatheringState,
+                          signalingState: pc.signalingState,
+                        });
+
                         stats.forEach((report: any) => {
+                          // Log de todos los tipos de reportes para debugging
+                          if (report.type === 'candidate-pair' && report.state === 'succeeded') {
+                            console.log('✅ ICE Candidate Pair (Active):', {
+                              localCandidateId: report.localCandidateId,
+                              remoteCandidateId: report.remoteCandidateId,
+                              state: report.state,
+                              nominated: report.nominated,
+                            });
+                          }
+
+                          if (report.type === 'local-candidate') {
+                            console.log('📤 Local ICE Candidate:', {
+                              candidateType: report.candidateType,
+                              ip: report.address || report.ip,
+                              port: report.port,
+                              protocol: report.protocol,
+                            });
+                          }
+
+                          if (report.type === 'remote-candidate') {
+                            console.log('📥 Remote ICE Candidate:', {
+                              candidateType: report.candidateType,
+                              ip: report.address || report.ip,
+                              port: report.port,
+                              protocol: report.protocol,
+                            });
+                          }
+
                           if (report.type === 'inbound-rtp' && report.kind === 'audio') {
+                            hasInboundRtp = true;
                             console.log('📊 Audio RTP Stats:', {
                               packetsReceived: report.packetsReceived,
                               bytesReceived: report.bytesReceived,
@@ -223,6 +262,10 @@ export const useSipClient = (config: SipConfig) => {
                             });
                           }
                         });
+
+                        if (!hasInboundRtp) {
+                          console.warn('⚠️ No inbound-rtp reports found - No RTP packets arriving!');
+                        }
                       }
                     }
                   };
