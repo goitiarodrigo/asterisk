@@ -15,6 +15,7 @@ RUN apt-get update && \
       nano \
       net-tools \
       procps \
+      openssl \
       # add anything else you need
     && rm -rf /var/lib/apt/lists/*
 
@@ -33,6 +34,10 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 # Copy verification script
 COPY verify-asterisk.sh /verify-asterisk.sh
 RUN chmod +x /verify-asterisk.sh
+
+# Copy SSL certificate generation script
+COPY generate-ssl-certs.sh /usr/local/bin/generate-ssl-certs.sh
+RUN chmod +x /usr/local/bin/generate-ssl-certs.sh
 
 # Expose Asterisk ports
 # 5060: SIP UDP/TCP

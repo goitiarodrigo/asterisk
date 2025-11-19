@@ -1,0 +1,244 @@
+.config-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+}
+
+.config-card {
+  background: #1f2937;
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.config-card h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+  color: #f3f4f6;
+  text-align: center;
+}
+
+.config-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #d1d5db;
+}
+
+.form-group input {
+  padding: 12px;
+  border: 2px solid #374151;
+  border-radius: 8px;
+  background: #111827;
+  color: #f3f4f6;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.connect-button {
+  padding: 14px;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.connect-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
+}
+
+.connect-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error-message {
+  padding: 12px;
+  background: #dc2626;
+  color: white;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.help-text {
+  margin-top: 24px;
+  padding: 16px;
+  background: #111827;
+  border-radius: 8px;
+  border-left: 4px solid #3b82f6;
+}
+
+.help-text h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: #93c5fd;
+}
+
+.help-text ul {
+  list-style: none;
+  padding: 0;
+  font-size: 13px;
+  color: #9ca3af;
+  line-height: 1.8;
+}
+
+.help-text ul li::before {
+  content: "→ ";
+  color: #3b82f6;
+  font-weight: bold;
+}
+
+.help-text code {
+  background: #374151;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #60a5fa;
+  font-size: 12px;
+}
+
+/* Monitor View */
+.app-container {
+  min-height: 100vh;
+  background: #111827;
+  padding: 20px;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #1f2937;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.app-header h1 {
+  font-size: 24px;
+  color: #f3f4f6;
+  margin: 0;
+}
+
+.header-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.status-badge {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.status-badge.connected {
+  background: #4ade80;
+  color: #000;
+}
+
+.status-badge.disconnected {
+  background: #6b7280;
+  color: #fff;
+}
+
+.extension-info {
+  padding: 6px 12px;
+  background: #374151;
+  color: #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: 'Courier New', monospace;
+}
+
+.disconnect-button {
+  padding: 8px 20px;
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.disconnect-button:hover {
+  background: #b91c1c;
+}
+
+.cameras-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.footer-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #1f2937;
+  border-radius: 12px;
+  color: #d1d5db;
+}
+
+.hangup-all-button {
+  padding: 10px 24px;
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.hangup-all-button:hover {
+  background: #b91c1c;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cameras-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-info {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
