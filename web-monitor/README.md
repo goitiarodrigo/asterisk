@@ -52,7 +52,7 @@ Al abrir la app, verás un formulario de configuración:
 
 - **Servidor Asterisk**: IP de tu servidor (ejemplo: `192.168.1.100`)
 - **Puerto WebSocket**: `8089` (default)
-- **Usuario**: `webuser3001`
+- **Usuario**: `3001`
 - **Contraseña**: `WebUser3001!`
 - **Extensión**: `3001`
 
@@ -62,7 +62,7 @@ O edita directamente `src/App.tsx`:
 const DEFAULT_CONFIG: SipConfig = {
   server: '192.168.1.100',    // ⚠️ CAMBIAR por tu IP
   port: '8089',
-  username: 'webuser3001',
+  username: '3001',
   password: 'WebUser3001!',
   extension: '3001',
 };

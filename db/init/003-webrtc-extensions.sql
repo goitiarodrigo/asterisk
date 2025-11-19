@@ -6,7 +6,7 @@
 -- estas usan WebRTC nativo del navegador
 --
 -- EXTENSIONES CREADAS:
--- - 3001: Operador Web 1 (usuario: webuser3001, password: WebUser3001!)
+-- - 3001: Operador Web 1 (usuario: 3001, password: WebUser3001!)
 -- - 3002: Operador Web 2 (usuario: webuser3002, password: WebUser3002!)
 -- ============================================================================
 
@@ -55,7 +55,7 @@ INSERT INTO ps_endpoints (
 );
 
 INSERT INTO ps_auths (id, auth_type, password, username)
-VALUES ('3001', 'userpass', 'WebUser3001!', 'webuser3001');
+VALUES ('3001', 'userpass', 'WebUser3001!', '3001');
 
 INSERT INTO ps_aors (id, max_contacts, remove_existing, qualify_frequency)
 VALUES ('3001', 5, 'yes', 60);  -- 5 contactos = 5 tabs del navegador

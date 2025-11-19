@@ -50,7 +50,7 @@ services:
       - "3000:80"          # Frontend en puerto 3000
     environment:
       # Variables de entorno para el frontend
-      # Estas se inyectan en runtime (docker-entrypoint.sh)
+      # Estas se inyectan en build time
       VITE_ASTERISK_SERVER: localhost
       VITE_ASTERISK_PORT: 8089
       VITE_SIP_USERNAME: 3001

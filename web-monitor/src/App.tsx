@@ -16,9 +16,9 @@ const getEnvVar = (key: string, defaultValue: string): string => {
 
 // CONFIGURACIÓN - Valores desde variables de entorno
 const DEFAULT_CONFIG: SipConfig = {
-  server: getEnvVar('VITE_ASTERISK_SERVER', 'asterisk'),
+  server: getEnvVar('VITE_ASTERISK_SERVER', 'localhost'),
   port: getEnvVar('VITE_ASTERISK_PORT', '8089'),
-  username: getEnvVar('VITE_SIP_USERNAME', 'webuser3001'),
+  username: getEnvVar('VITE_SIP_USERNAME', '3001'),
   password: getEnvVar('VITE_SIP_PASSWORD', 'WebUser3001!'),
   extension: getEnvVar('VITE_SIP_EXTENSION', '3001'),
 };
@@ -93,7 +93,7 @@ function App() {
                 type="text"
                 value={config.username}
                 onChange={(e) => setConfig({ ...config, username: e.target.value })}
-                placeholder="webuser3001"
+                placeholder="3001"
               />
             </div>
 
