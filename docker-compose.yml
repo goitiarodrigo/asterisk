@@ -51,9 +51,9 @@ services:
     environment:
       # Variables de entorno para el frontend
       # Estas se inyectan en build time
-      VITE_ASTERISK_SERVER: asterisk
+      VITE_ASTERISK_SERVER: localhost
       VITE_ASTERISK_PORT: 8089
-      VITE_SIP_USERNAME: webuser3001
+      VITE_SIP_USERNAME: 3001
       VITE_SIP_PASSWORD: WebUser3001!
       VITE_SIP_EXTENSION: 3001
     networks:

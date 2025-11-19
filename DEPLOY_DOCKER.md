@@ -76,7 +76,7 @@ El frontend lee la configuración de variables de entorno definidas en `docker-c
 environment:
   VITE_ASTERISK_SERVER: asterisk      # Hostname interno de Docker
   VITE_ASTERISK_PORT: 8089
-  VITE_SIP_USERNAME: webuser3001
+  VITE_SIP_USERNAME: 3001
   VITE_SIP_PASSWORD: WebUser3001!
   VITE_SIP_EXTENSION: 3001
 ```
@@ -96,7 +96,7 @@ Crear archivo `.env` en la raíz:
 ```bash
 VITE_ASTERISK_SERVER=192.168.1.100
 VITE_ASTERISK_PORT=8089
-VITE_SIP_USERNAME=webuser3001
+VITE_SIP_USERNAME=3001
 VITE_SIP_PASSWORD=WebUser3001!
 VITE_SIP_EXTENSION=3001
 ```

@@ -232,7 +232,7 @@ Abrir `src/App.tsx` y cambiar la IP:
 const DEFAULT_CONFIG: SipConfig = {
   server: '192.168.1.100',    // ⚠️ CAMBIAR por la IP de tu servidor
   port: '8089',
-  username: 'webuser3001',
+  username: '3001',
   password: 'WebUser3001!',
   extension: '3001',
 };

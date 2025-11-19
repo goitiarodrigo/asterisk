@@ -12,7 +12,7 @@ import { SessionDescriptionHandler } from 'sip.js/lib/platform/web';
 export interface SipConfig {
   server: string;        // Ejemplo: "192.168.1.100"
   port: string;          // Ejemplo: "8089"
-  username: string;      // Ejemplo: "webuser3001"
+  username: string;      // Ejemplo: "3001"
   password: string;      // Ejemplo: "WebUser3001!"
   extension: string;     // Ejemplo: "3001"
 }
