@@ -120,7 +120,7 @@ export const useSipClient = (config: SipConfig) => {
   // Llamar a una extensión (cámara)
   const callExtension = useCallback(
     (targetExtension: string): Promise<HTMLVideoElement | null> => {
-      return new Promise((resolve, reject) => {
+      return new Promise(async (resolve, reject) => {
         if (!userAgent || !state.isRegistered) {
           reject(new Error('No registrado'));
           return;
@@ -132,14 +132,27 @@ export const useSipClient = (config: SipConfig) => {
           return;
         }
 
+        // Crear un stream de audio silencioso (dummy) para receive-only
+        // Esto es necesario para que el SDP sea válido sin capturar el micrófono
+        const audioContext = new AudioContext();
+        const destination = audioContext.createMediaStreamDestination();
+        const dummyStream = destination.stream;
+
         const inviter = new Inviter(userAgent, target, {
           sessionDescriptionHandlerOptions: {
             constraints: {
-              audio: false,  // No capturar audio local (solo recibir)
-              video: false,  // No capturar video local (solo recibir)
+              audio: true,
+              video: false,
             },
           },
         });
+
+        // Reemplazar el stream local con nuestro stream dummy
+        const sessionDescriptionHandler = inviter.sessionDescriptionHandler;
+        if (sessionDescriptionHandler && 'localMediaStream' in sessionDescriptionHandler) {
+          // @ts-ignore - acceso a propiedad interna
+          sessionDescriptionHandler.localMediaStream = dummyStream;
+        }
 
         // Configurar video element
         const videoElement = document.createElement('video');
