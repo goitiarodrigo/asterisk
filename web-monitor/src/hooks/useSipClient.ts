@@ -44,6 +44,13 @@ export const useSipClient = (config: SipConfig) => {
       connectionTimeout: 10,
     };
 
+    // STUN servers desde variables de entorno o defaults
+    // @ts-ignore - window.ENV se inyecta en runtime por Docker
+    const stunServersEnv = (typeof window !== 'undefined' && window.ENV?.VITE_STUN_SERVERS)
+      ? window.ENV.VITE_STUN_SERVERS
+      : (import.meta.env.VITE_STUN_SERVERS || 'stun:stun.l.google.com:19302,stun:stun1.l.google.com:19302');
+    const stunServers = stunServersEnv.split(',').map((url: string) => ({ urls: url.trim() }));
+
     const ua = new UserAgent({
       uri: Web.UserAgent.makeURI(uri)!,
       transportOptions,
@@ -51,14 +58,11 @@ export const useSipClient = (config: SipConfig) => {
       authorizationPassword: config.password,
       sessionDescriptionHandlerFactoryOptions: {
         peerConnectionConfiguration: {
-          iceServers: [
-            { urls: 'stun:stun.l.google.com:19302' },
-            { urls: 'stun:stun1.l.google.com:19302' },
-          ],
+          iceServers: stunServers,
         },
       },
       displayName: `Operador ${config.extension}`,
-      logLevel: 'debug', // Cambiar a 'warn' en producción
+      logLevel: import.meta.env.PROD ? 'warn' : 'debug',
     });
 
     setUserAgent(ua);

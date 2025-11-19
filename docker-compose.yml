@@ -1,5 +1,7 @@
 version: "3.9"
+
 services:
+  # Base de datos PostgreSQL
   db:
     image: postgres:16
     container_name: ast-db
@@ -12,7 +14,11 @@ services:
     volumes:
       - ./db/init:/docker-entrypoint-initdb.d
       - dbdata:/var/lib/postgresql/data
+    networks:
+      - asterisk-network
+    restart: unless-stopped
 
+  # Servidor Asterisk (SIP/WebRTC)
   asterisk:
     image: asterisk-normal:22.5.1
     container_name: asterisk
@@ -24,6 +30,35 @@ services:
       - "5060:5060/tcp"     # SIP TCP
       - "8089:8089/tcp"     # WebSocket Secure (WebRTC)
       - "10000-10100:10000-10100/udp"  # RTP para audio/video (ajustar rango según necesidad)
-    
+    networks:
+      - asterisk-network
+
+  # Frontend - Monitor de cámaras
+  web-monitor:
+    build:
+      context: ./web-monitor
+      dockerfile: Dockerfile
+    image: asterisk-web-monitor:latest
+    container_name: web-monitor
+    depends_on:
+      - asterisk
+    restart: unless-stopped
+    ports:
+      - "3000:80"          # Frontend en puerto 3000
+    environment:
+      # Variables de entorno para el frontend
+      # Estas se inyectan en build time
+      VITE_ASTERISK_SERVER: asterisk
+      VITE_ASTERISK_PORT: 8089
+      VITE_SIP_USERNAME: webuser3001
+      VITE_SIP_PASSWORD: WebUser3001!
+      VITE_SIP_EXTENSION: 3001
+    networks:
+      - asterisk-network
+
+networks:
+  asterisk-network:
+    driver: bridge
+
 volumes:
   dbdata:

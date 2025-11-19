@@ -1,33 +1,69 @@
-## Asterisk + PostgreSQL con Docker Compose
+## 🎥 Sistema de Monitoreo de Cámaras con Asterisk + WebRTC
 
-Este proyecto permite levantar Asterisk con PostgreSQL usando Docker Compose.
+Sistema completo de streaming de video en tiempo real usando Asterisk como media server y aplicación web React para monitoreo.
 
 ---
 
-## 🎯 Ambiente de Calidad - Configuración Lista
-
-✅ **3 extensiones de prueba configuradas** (1001, 1002, 1003)
-✅ **Soporte de video habilitado** (H.264, VP8, VP9)
-✅ **WebRTC configurado** (para navegadores)
-✅ **Dialplan de testing** con extensiones de prueba
-
-### ⚡ Quick Start
+## 🚀 Quick Start - Levantar Todo con Docker
 
 ```bash
-# 1. Build y levantar
-docker build -t asterisk-normal:22.5.1 .
+# 1. Build y levantar TODO (DB + Asterisk + Frontend)
+docker compose build
 docker compose up -d
 
-# 2. Verificar
-docker exec -it asterisk /verify-asterisk.sh
+# 2. Acceder a la aplicación web
+http://localhost:3000
 
-# 3. Configurar Zoiper con:
+# 3. Configurar "cámaras" con Zoiper:
 #    - Usuario: test1001 / Password: Test1001!
 #    - Domain: <IP_SERVIDOR>:5060
 ```
 
-📘 **Guía completa**: Ver `GUIA_AMBIENTE_CALIDAD.md`
-⚡ **Inicio rápido**: Ver `QUICK_START.md`
+🐳 **Deploy completo**: Ver `DEPLOY_DOCKER.md`
+
+---
+
+## 📦 ¿Qué incluye?
+
+### Backend
+- ✅ **PostgreSQL 16** - Base de datos con extensiones en Realtime
+- ✅ **Asterisk 22.5.1** - Servidor SIP/WebRTC
+- ✅ **Extensiones de prueba** (1001, 1002, 1003)
+- ✅ **Extensiones WebRTC** (3001, 3002)
+- ✅ **Soporte de video** (H.264, VP8, VP9)
+- ✅ **Certificados SSL** autofirmados (auto-generados)
+- ✅ **Dialplan de testing**
+
+### Frontend
+- ✅ **Aplicación React + TypeScript**
+- ✅ **WebRTC** para streaming en tiempo real
+- ✅ **UI moderna** con grid de cámaras
+- ✅ **Conexión/desconexión** individual por cámara
+- ✅ **Configuración dinámica** vía variables de entorno
+
+---
+
+## 📚 Documentación
+
+| Documento | Descripción |
+|-----------|-------------|
+| **DEPLOY_DOCKER.md** | 🐳 Guía completa de despliegue con Docker Compose |
+| **GUIA_WEBRTC_MONITOR.md** | 🎥 Configuración de WebRTC y pruebas con webcams |
+| **GUIA_AMBIENTE_CALIDAD.md** | ⚙️ Configuración de Asterisk y pruebas con Zoiper |
+| **QUICK_START.md** | ⚡ Inicio rápido en 5 minutos |
+| **web-monitor/README.md** | ⚛️ Documentación del frontend React |
+
+---
+
+## 🌐 Puertos Expuestos
+
+| Puerto | Servicio | Protocolo | Descripción |
+|--------|----------|-----------|-------------|
+| 3000   | Frontend | HTTP      | Aplicación web de monitoreo |
+| 5060   | Asterisk | UDP/TCP   | SIP (para Zoiper/cámaras) |
+| 8089   | Asterisk | WSS       | WebSocket Secure (WebRTC) |
+| 10000-10100 | Asterisk | UDP | RTP (audio/video) |
+| 5432   | PostgreSQL | TCP    | Base de datos (opcional) |
 
 ---
 

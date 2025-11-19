@@ -3,13 +3,24 @@ import { useSipClient, SipConfig } from './hooks/useSipClient';
 import { CameraStream } from './components/CameraStream';
 import './App.css';
 
-// CONFIGURACIÓN - CAMBIAR ESTOS VALORES
+// Función helper para obtener variables de entorno
+// Prioridad: window.ENV (Docker runtime) > import.meta.env (dev) > defaults
+const getEnvVar = (key: string, defaultValue: string): string => {
+  // @ts-ignore - window.ENV se inyecta en runtime por Docker
+  if (typeof window !== 'undefined' && window.ENV && window.ENV[key]) {
+    // @ts-ignore
+    return window.ENV[key];
+  }
+  return import.meta.env[key] || defaultValue;
+};
+
+// CONFIGURACIÓN - Valores desde variables de entorno
 const DEFAULT_CONFIG: SipConfig = {
-  server: '192.168.1.100',    // ⚠️ CAMBIAR por la IP de tu servidor Asterisk
-  port: '8089',               // Puerto WebSocket (WSS)
-  username: 'webuser3001',    // Usuario WebRTC
-  password: 'WebUser3001!',   // Password WebRTC
-  extension: '3001',          // Extensión del operador
+  server: getEnvVar('VITE_ASTERISK_SERVER', 'asterisk'),
+  port: getEnvVar('VITE_ASTERISK_PORT', '8089'),
+  username: getEnvVar('VITE_SIP_USERNAME', 'webuser3001'),
+  password: getEnvVar('VITE_SIP_PASSWORD', 'WebUser3001!'),
+  extension: getEnvVar('VITE_SIP_EXTENSION', '3001'),
 };
 
 // Lista de cámaras disponibles
