@@ -158,6 +158,9 @@ export const useSipClient = (config: SipConfig) => {
         const videoElement = document.createElement('video');
         videoElement.autoplay = true;
         videoElement.playsInline = true;
+        videoElement.muted = false;  // Asegurarse de que NO esté silenciado
+        videoElement.volume = 1.0;   // Volumen al máximo
+        videoElement.controls = true; // Mostrar controles para debugging
 
         // Setup remote media
         inviter.stateChange.addListener((newState) => {
@@ -170,6 +173,17 @@ export const useSipClient = (config: SipConfig) => {
                 const remoteStream = sessionDescriptionHandler.remoteMediaStream;
                 if (remoteStream) {
                   videoElement.srcObject = remoteStream;
+
+                  // Intentar reproducir explícitamente
+                  videoElement.play().catch((error) => {
+                    console.error('Error al reproducir audio:', error);
+                    // Si falla por políticas de autoplay, el usuario puede usar los controles
+                  });
+
+                  // Log para debugging
+                  console.log('Stream remoto asignado:', remoteStream);
+                  console.log('Audio tracks:', remoteStream.getAudioTracks());
+                  console.log('Video tracks:', remoteStream.getVideoTracks());
 
                   // Actualizar sesiones activas
                   setState((prev) => {
