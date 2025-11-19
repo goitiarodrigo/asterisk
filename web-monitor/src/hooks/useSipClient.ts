@@ -185,6 +185,26 @@ export const useSipClient = (config: SipConfig) => {
                   console.log('Audio tracks:', remoteStream.getAudioTracks());
                   console.log('Video tracks:', remoteStream.getVideoTracks());
 
+                  // Verificar estado de los audio tracks
+                  const audioTracks = remoteStream.getAudioTracks();
+                  if (audioTracks.length > 0) {
+                    audioTracks.forEach((track, index) => {
+                      console.log(`Audio track ${index}:`, {
+                        id: track.id,
+                        kind: track.kind,
+                        label: track.label,
+                        enabled: track.enabled,
+                        muted: track.muted,
+                        readyState: track.readyState,
+                      });
+
+                      // Asegurarse de que el track esté habilitado
+                      track.enabled = true;
+                    });
+                  } else {
+                    console.error('No hay audio tracks en el stream remoto!');
+                  }
+
                   // Actualizar sesiones activas
                   setState((prev) => {
                     const newSessions = new Map(prev.activeSessions);
