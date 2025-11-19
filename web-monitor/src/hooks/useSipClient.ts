@@ -135,8 +135,8 @@ export const useSipClient = (config: SipConfig) => {
         const inviter = new Inviter(userAgent, target, {
           sessionDescriptionHandlerOptions: {
             constraints: {
-              audio: true,
-              video: true,
+              audio: false,  // No capturar audio local (solo recibir)
+              video: false,  // No capturar video local (solo recibir)
             },
           },
         });
