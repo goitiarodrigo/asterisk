@@ -205,6 +205,38 @@ export const useSipClient = (config: SipConfig) => {
                     console.error('No hay audio tracks en el stream remoto!');
                   }
 
+                  // Verificar estadísticas de WebRTC cada 2 segundos
+                  const checkStats = async () => {
+                    if (sessionDescriptionHandler && 'peerConnection' in sessionDescriptionHandler) {
+                      // @ts-ignore
+                      const pc = sessionDescriptionHandler.peerConnection;
+                      if (pc) {
+                        const stats = await pc.getStats();
+                        stats.forEach((report: any) => {
+                          if (report.type === 'inbound-rtp' && report.kind === 'audio') {
+                            console.log('📊 Audio RTP Stats:', {
+                              packetsReceived: report.packetsReceived,
+                              bytesReceived: report.bytesReceived,
+                              packetsLost: report.packetsLost,
+                              jitter: report.jitter,
+                              timestamp: new Date().toLocaleTimeString(),
+                            });
+                          }
+                        });
+                      }
+                    }
+                  };
+
+                  // Verificar estadísticas cada 2 segundos
+                  const statsInterval = setInterval(checkStats, 2000);
+
+                  // Limpiar intervalo cuando la sesión termine
+                  inviter.stateChange.addListener((state) => {
+                    if (state === SessionState.Terminated) {
+                      clearInterval(statsInterval);
+                    }
+                  });
+
                   // Actualizar sesiones activas
                   setState((prev) => {
                     const newSessions = new Map(prev.activeSessions);
