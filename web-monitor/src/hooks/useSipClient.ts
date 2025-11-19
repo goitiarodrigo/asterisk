@@ -6,8 +6,10 @@ import {
   Session,
   SessionState,
   RegistererState,
-  Web,
+  UserAgentOptions,
+  URI,
 } from 'sip.js';
+import { SessionDescriptionHandler } from 'sip.js/lib/platform/web';
 
 export interface SipConfig {
   server: string;        // Ejemplo: "192.168.1.100"
@@ -52,7 +54,7 @@ export const useSipClient = (config: SipConfig) => {
     const stunServers = stunServersEnv.split(',').map((url: string) => ({ urls: url.trim() }));
 
     const ua = new UserAgent({
-      uri: Web.UserAgent.makeURI(uri)!,
+      uri: UserAgent.makeURI(uri)!,
       transportOptions,
       authorizationUsername: config.username,
       authorizationPassword: config.password,
@@ -126,7 +128,7 @@ export const useSipClient = (config: SipConfig) => {
           return;
         }
 
-        const target = Web.UserAgent.makeURI(`sip:${targetExtension}@${config.server}`);
+        const target = UserAgent.makeURI(`sip:${targetExtension}@${config.server}`);
         if (!target) {
           reject(new Error('URI inválido'));
           return;
@@ -153,7 +155,7 @@ export const useSipClient = (config: SipConfig) => {
           switch (newState) {
             case SessionState.Established: {
               const sessionDescriptionHandler = inviter.sessionDescriptionHandler;
-              if (sessionDescriptionHandler instanceof Web.SessionDescriptionHandler) {
+              if (sessionDescriptionHandler instanceof SessionDescriptionHandler) {
                 const remoteStream = sessionDescriptionHandler.remoteMediaStream;
                 if (remoteStream) {
                   videoElement.srcObject = remoteStream;
