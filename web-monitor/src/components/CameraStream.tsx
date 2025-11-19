@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 interface CameraStreamProps {
   extension: string;
@@ -15,7 +15,8 @@ export const CameraStream: React.FC<CameraStreamProps> = ({
   onHangup,
   isActive,
 }) => {
-  const videoRef = useRef<HTMLDivElement>(null);
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+  const videoElementRef = useRef<HTMLVideoElement | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,10 +26,17 @@ export const CameraStream: React.FC<CameraStreamProps> = ({
 
     try {
       const videoElement = await onCall(extension);
-      if (videoElement && videoRef.current) {
-        // Limpiar video anterior si existe
-        videoRef.current.innerHTML = '';
-        videoRef.current.appendChild(videoElement);
+      if (videoElement && videoContainerRef.current) {
+        // Guardar referencia al elemento de video
+        videoElementRef.current = videoElement;
+
+        // Limpiar contenedor
+        while (videoContainerRef.current.firstChild) {
+          videoContainerRef.current.removeChild(videoContainerRef.current.firstChild);
+        }
+
+        // Agregar nuevo elemento de video
+        videoContainerRef.current.appendChild(videoElement);
         videoElement.style.width = '100%';
         videoElement.style.height = '100%';
         videoElement.style.objectFit = 'cover';
@@ -43,10 +51,22 @@ export const CameraStream: React.FC<CameraStreamProps> = ({
 
   const handleDisconnect = () => {
     onHangup(extension);
-    if (videoRef.current) {
-      videoRef.current.innerHTML = '';
+    // Limpiar el elemento de video
+    if (videoElementRef.current && videoContainerRef.current) {
+      videoContainerRef.current.removeChild(videoElementRef.current);
+      videoElementRef.current = null;
     }
   };
+
+  // Cleanup cuando el componente se desmonta
+  useEffect(() => {
+    return () => {
+      if (videoElementRef.current && videoContainerRef.current) {
+        videoContainerRef.current.removeChild(videoElementRef.current);
+        videoElementRef.current = null;
+      }
+    };
+  }, []);
 
   return (
     <div
@@ -85,22 +105,63 @@ export const CameraStream: React.FC<CameraStreamProps> = ({
       </div>
 
       <div
-        ref={videoRef}
         style={{
           width: '100%',
           height: '300px',
           backgroundColor: '#000',
           borderRadius: '4px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#9ca3af',
-          fontSize: '14px',
+          position: 'relative',
           overflow: 'hidden',
         }}
       >
-        {!isActive && !isLoading && 'Sin señal'}
-        {isLoading && 'Conectando...'}
+        {/* Contenedor de video - manipulado directamente */}
+        <div
+          ref={videoContainerRef}
+          style={{
+            width: '100%',
+            height: '100%',
+          }}
+        />
+
+        {/* Mensajes de estado - solo cuando no hay video */}
+        {!isActive && !isLoading && (
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#9ca3af',
+              fontSize: '14px',
+              pointerEvents: 'none',
+            }}
+          >
+            Sin señal
+          </div>
+        )}
+        {isLoading && (
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#9ca3af',
+              fontSize: '14px',
+              pointerEvents: 'none',
+            }}
+          >
+            Conectando...
+          </div>
+        )}
       </div>
 
       {error && (
